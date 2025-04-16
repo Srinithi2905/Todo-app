@@ -11,7 +11,8 @@ function Home({ darkMode }) {
   useEffect(() => {
     // Fetch tasks when the component mounts
     setIsLoading(true);
-    axios.get('http://localhost:3000/get')
+    // axios.get('http://localhost:3000/get')
+    axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/get`)
       .then((response) => {
         // Transform data to match frontend expectations
         const transformedData = response.data.map(item => ({

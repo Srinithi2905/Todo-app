@@ -3,8 +3,11 @@ import axios from 'axios';
 
 function TodoList({ todos, setTodos, darkMode }) {
   const handleToggleCompleted = (id, currentStatus) => {
-    axios
-      .patch(`http://localhost:3000/update/${id}`, { completed: !currentStatus })
+    // axios
+    //   .patch(`http://localhost:3000/update/${id}`, { completed: !currentStatus })
+    axios.patch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/update/${id}`, {
+        completed: !currentStatus
+      })      
       .then((response) => {
         setTodos(todos.map((todo) => (todo._id === id ? response.data : todo)));
       })
@@ -16,8 +19,9 @@ function TodoList({ todos, setTodos, darkMode }) {
 
   const handleDeleteTask = (id) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
-      axios
-        .delete(`http://localhost:3000/delete/${id}`)
+        //   axios
+       // .delete(`http://localhost:3000/delete/${id}`)
+        axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/delete/${id}`)
         .then(() => {
           setTodos(todos.filter((todo) => todo._id !== id));
         })

@@ -4,13 +4,15 @@ import { FaCheckCircle, FaTrashAlt, FaClock, FaCheck } from 'react-icons/fa'
 
 function TodoItem({ todo, onUpdate }) {
   const handleDelete = () => {
-    axios.delete(`http://localhost:3000/delete/${todo._id}`)
+    // axios.delete(`http://localhost:3000/delete/${todo._id}`)
+    axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/delete/${todo._id}`)
       .then(() => onUpdate())
       .catch(err => console.log(err))
   }
 
   const handleComplete = () => {
-    axios.put(`http://localhost:3000/complete/${todo._id}`)
+    // axios.put(`http://localhost:3000/complete/${todo._id}`)
+    axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/complete/${todo._id}`)
       .then(() => onUpdate())
       .catch(err => console.log(err))
   }

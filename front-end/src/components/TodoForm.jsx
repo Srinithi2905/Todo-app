@@ -11,8 +11,10 @@ function TodoForm({ setTodos, darkMode }) {
     if (task.trim()) {
       const newTask = { task, description, startDate, dueDate, completed: false };
       
-      axios
-        .post('http://localhost:3000/add', newTask)
+    //   axios
+    //     .post('http://localhost:3000/add', newTask)
+    axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/add`, newTask)
+
         .then((response) => {
           setTodos((prevTodos) => [...prevTodos, response.data]);
           // Clear form

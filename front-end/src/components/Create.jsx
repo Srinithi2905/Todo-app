@@ -6,7 +6,8 @@ function Create({ onAdd }) {
 
     const handleAdd = () => {
         if (!task) return; // prevent empty task
-        axios.post('http://localhost:3000/add', { task })
+        // axios.post('http://localhost:3000/add', { task })
+        axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/add`, newTask)
             .then(result => {
                 console.log(result)
                 setTask('')        
