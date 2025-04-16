@@ -6,10 +6,12 @@ const cors = require('cors');
 const TodoModel = require('./Models/Models');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000'
+  }));
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://smiley:srinithi%4029@cluster0.0bple.mongodb.net/test')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://smiley:srinithi%4029@cluster0.0bple.mongodb.net/test')
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('Connection error:', err));
 
