@@ -7,19 +7,48 @@ function TodoForm({ setTodos, darkMode }) {
   const [dueDate, setDueDate] = useState('');
   const [startDate] = useState(new Date().toISOString().split('T')[0]); // Today's date
 
+  // const handleAddTask = () => {
+  //   if (task.trim()) {
+  //     const newTask = { task, description, startDate, dueDate, completed: false };
+      
+  //   //   axios
+  //   //     .post('http://localhost:3000/add', newTask)
+  //   axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/add`, newTask)
+
+  //       .then((response) => {
+  //         setTodos((prevTodos) => [...prevTodos, response.data]);
+  //         // Clear form
+  //         setTask('');
+  //         setDescription('');
+  //         setDueDate('');
+  //       })
+  //       .catch((err) => {
+  //         console.error('Error adding task:', err);
+  //         alert('Failed to add task. Please try again.');
+  //       });
+  //   }
+  // };
   const handleAddTask = () => {
     if (task.trim()) {
-      const newTask = { task, description, startDate, dueDate, completed: false };
-      
-    //   axios
-    //     .post('http://localhost:3000/add', newTask)
-    axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/add`, newTask)
-
+      const newTask = {
+        task,
+        description,
+        startDate,
+        dueDate,
+        completed: false,
+      };
+  
+      const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+  
+      axios
+        .post(`${API_BASE_URL}/add`, newTask)
         .then((response) => {
           setTodos((prevTodos) => [...prevTodos, response.data]);
-          // Clear form
+  
+          // Clear form inputs
           setTask('');
           setDescription('');
+          setStartDate('');
           setDueDate('');
         })
         .catch((err) => {
@@ -28,6 +57,7 @@ function TodoForm({ setTodos, darkMode }) {
         });
     }
   };
+  
 
   return (
     <div className={`p-6 rounded-lg shadow-lg mb-6 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'}`}>

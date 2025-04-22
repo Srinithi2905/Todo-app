@@ -8,32 +8,62 @@ function Home({ darkMode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // useEffect(() => {
+  //   // Fetch tasks when the component mounts
+  //   setIsLoading(true);
+  //   // axios.get('http://localhost:3000/get')
+  //   axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/get`)
+  //     .then((response) => {
+  //       // Transform data to match frontend expectations
+  //       const transformedData = response.data.map(item => ({
+  //         _id: item._id,
+  //         task: item.title, // Map title to task
+  //         description: item.description,
+  //         startDate: item.startDate,
+  //         dueDate: item.dueDate,
+  //         completed: item.completed,
+  //         completedDate: item.completedDate
+  //       }));
+  //       setTodos(transformedData);
+  //       setError(null);
+  //     })
+  //     .catch((err) => {
+  //       console.error('Error fetching tasks:', err);
+  //       setError('Failed to load tasks. Please refresh the page or try again later.');
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // }, []);
+
   useEffect(() => {
-    // Fetch tasks when the component mounts
-    setIsLoading(true);
-    // axios.get('http://localhost:3000/get')
-    axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/get`)
-      .then((response) => {
-        // Transform data to match frontend expectations
+    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
+    const fetchTasks = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await axios.get(`${API_BASE_URL}/get`);
         const transformedData = response.data.map(item => ({
           _id: item._id,
-          task: item.title, // Map title to task
+          task: item.title, // Convert backend title to frontend task label
           description: item.description,
           startDate: item.startDate,
           dueDate: item.dueDate,
           completed: item.completed,
-          completedDate: item.completedDate
+          completedDate: item.completedDate,
         }));
         setTodos(transformedData);
         setError(null);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('Error fetching tasks:', err);
         setError('Failed to load tasks. Please refresh the page or try again later.');
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    fetchTasks();
   }, []);
 
   return (
@@ -41,13 +71,12 @@ function Home({ darkMode }) {
       <h1 className={`text-4xl font-bold text-center mb-8 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
         Todo List
       </h1>
-      
+
       <TodoForm setTodos={setTodos} darkMode={darkMode} />
-      
+
       {isLoading ? (
-        <div className={`p-8 text-center rounded-lg shadow-md ${
-          darkMode ? 'bg-gray-700 text-gray-200' : 'bg-white text-gray-600'
-        }`}>
+        <div className={`p-8 text-center rounded-lg shadow-md ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-white text-gray-600'
+          }`}>
           <p className="text-lg">Loading tasks...</p>
         </div>
       ) : error ? (

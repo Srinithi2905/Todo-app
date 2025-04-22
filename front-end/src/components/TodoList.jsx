@@ -1,13 +1,42 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+// function TodoList({ todos, setTodos, darkMode }) {
+//   const handleToggleCompleted = (id, currentStatus) => {
+//     // axios
+//     //   .patch(`http://localhost:3000/update/${id}`, { completed: !currentStatus })
+//     axios.patch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/update/${id}`, {
+//         completed: !currentStatus
+//       })      
+//       .then((response) => {
+//         setTodos(todos.map((todo) => (todo._id === id ? response.data : todo)));
+//       })
+//       .catch((err) => {
+//         console.error('Error updating task:', err);
+//         alert('Failed to update task status. Please try again.');
+//       });
+//   };
+
+//   const handleDeleteTask = (id) => {
+//     if (window.confirm('Are you sure you want to delete this task?')) {
+//         //   axios
+//        // .delete(`http://localhost:3000/delete/${id}`)
+//         axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/delete/${id}`)
+//         .then(() => {
+//           setTodos(todos.filter((todo) => todo._id !== id));
+//         })
+//         .catch((err) => {
+//           console.error('Error deleting task:', err);
+//           alert('Failed to delete task. Please try again.');
+//         });
+//     }
+//   };
 function TodoList({ todos, setTodos, darkMode }) {
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
   const handleToggleCompleted = (id, currentStatus) => {
-    // axios
-    //   .patch(`http://localhost:3000/update/${id}`, { completed: !currentStatus })
-    axios.patch(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/update/${id}`, {
-        completed: !currentStatus
-      })      
+    axios
+      .patch(`${API_BASE_URL}/update/${id}`, { completed: !currentStatus })
       .then((response) => {
         setTodos(todos.map((todo) => (todo._id === id ? response.data : todo)));
       })
@@ -19,9 +48,8 @@ function TodoList({ todos, setTodos, darkMode }) {
 
   const handleDeleteTask = (id) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
-        //   axios
-       // .delete(`http://localhost:3000/delete/${id}`)
-        axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/delete/${id}`)
+      axios
+        .delete(`${API_BASE_URL}/delete/${id}`)
         .then(() => {
           setTodos(todos.filter((todo) => todo._id !== id));
         })
@@ -31,7 +59,6 @@ function TodoList({ todos, setTodos, darkMode }) {
         });
     }
   };
-
   // Sort todos: incomplete first, then by due date
   const sortedTodos = [...todos].sort((a, b) => {
     // First sort by completion status

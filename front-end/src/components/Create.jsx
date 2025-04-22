@@ -1,20 +1,26 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function Create({ onAdd }) {
-    const [task, setTask] = useState('')
+    const [task, setTask] = useState('');
+
+    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
 
     const handleAdd = () => {
-        if (!task) return; // prevent empty task
-        // axios.post('http://localhost:3000/add', { task })
-        axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/add`, newTask)
+        if (!task.trim()) return;
+
+        const newTask = { task }; // Construct the task object
+
+        axios.post(`${API_BASE_URL}/add`, newTask)
             .then(result => {
-                console.log(result)
-                setTask('')        
-                onAdd()            // refresh list
+                console.log('Task added:', result.data);
+                setTask('');
+                onAdd(); // Refresh list
             })
-            .catch(err => console.log(err))
-    }
+            .catch(err => {
+                console.error('Error adding task:', err);
+            });
+    };
 
     return (
         <div className='create-form'>

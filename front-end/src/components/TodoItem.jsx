@@ -2,20 +2,40 @@ import React from 'react'
 import axios from 'axios'
 import { FaCheckCircle, FaTrashAlt, FaClock, FaCheck } from 'react-icons/fa'
 
+// function TodoItem({ todo, onUpdate }) {
+//   const handleDelete = () => {
+//     // axios.delete(`http://localhost:3000/delete/${todo._id}`)
+//     axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/delete/${todo._id}`)
+//       .then(() => onUpdate())
+//       .catch(err => console.log(err))
+//   }
+
+//   const handleComplete = () => {
+//     // axios.put(`http://localhost:3000/complete/${todo._id}`)
+//     axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/complete/${todo._id}`)
+//       .then(() => onUpdate())
+//       .catch(err => console.log(err))
+//   }
 function TodoItem({ todo, onUpdate }) {
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
   const handleDelete = () => {
-    // axios.delete(`http://localhost:3000/delete/${todo._id}`)
-    axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/delete/${todo._id}`)
+    axios
+      .delete(`${API_BASE_URL}/delete/${todo._id}`)
       .then(() => onUpdate())
-      .catch(err => console.log(err))
-  }
+      .catch((err) => {
+        console.error('Error deleting task:', err);
+      });
+  };
 
   const handleComplete = () => {
-    // axios.put(`http://localhost:3000/complete/${todo._id}`)
-    axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:3000'}/complete/${todo._id}`)
+    axios
+      .put(`${API_BASE_URL}/complete/${todo._id}`)
       .then(() => onUpdate())
-      .catch(err => console.log(err))
-  }
+      .catch((err) => {
+        console.error('Error completing task:', err);
+      });
+  };
 
   return (
     <tr className="border-t text-sm">
